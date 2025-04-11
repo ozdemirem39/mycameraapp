@@ -27,7 +27,8 @@ import java.util.ArrayList
 import java.util.Collections
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.apache.poi.ss.usermodel.*
-
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var textureView: TextureView
@@ -44,13 +45,11 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var cameraId: String
     private lateinit var textCounter: TextView
 
-
     private val rgbList = ArrayList<String>()
     private val hsvList = ArrayList<String>()
     private val colorDataList = mutableListOf<ColorData>()
     private var photoCount = 0
-
-
+    private val photoFileList = ArrayList<File>()
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -94,76 +93,77 @@ class CameraActivity : AppCompatActivity() {
 
         textCounter = findViewById(R.id.textCounter)
         textCounter.text = "0 ölçüm alındı"
-
-
     }
 
     private fun generateXLSX(): File {
         val file = File(getExternalFilesDir(null), "data.xlsx")
+        val workbook = XSSFWorkbook()
 
-        val workbook = org.apache.poi.xssf.usermodel.XSSFWorkbook()
-        val sheet = workbook.createSheet("Veriler")
-
-        // Başlıklar
-        val header = listOf(
-            "R1", "G1", "B1", "R2", "G2", "B2", "R3", "G3", "B3",
-            "H1", "S1", "V1", "H2", "S2", "V2", "H3", "S3", "V3"
-        )
-        val headerRow = sheet.createRow(0)
-        for ((i, title) in header.withIndex()) {
-            headerRow.createCell(i).setCellValue(title)
+        // RGB Sayfası
+        val rgbSheet = workbook.createSheet("RGB_Verileri")
+        val rgbHeader = listOf("R1", "G1", "B1", "R2", "G2", "B2", "R3", "G3", "B3")
+        val rgbHeaderRow = rgbSheet.createRow(0)
+        for ((i, title) in rgbHeader.withIndex()) {
+            rgbHeaderRow.createCell(i).setCellValue(title)
         }
 
-        // Veri satırları
+        // HSV Sayfası
+        val hsvSheet = workbook.createSheet("HSV_Verileri")
+        val hsvHeader = listOf("H1", "S1", "V1", "H2", "S2", "V2", "H3", "S3", "V3")
+        val hsvHeaderRow = hsvSheet.createRow(0)
+        for ((i, title) in hsvHeader.withIndex()) {
+            hsvHeaderRow.createCell(i).setCellValue(title)
+        }
+
+        // Her 3 ölçüm bir satır olarak yazılır
         var rowIndex = 1
         for (i in colorDataList.indices step 3) {
             if (i + 2 >= colorDataList.size) break
-            val row = sheet.createRow(rowIndex++)
+
+            val rgbRow = rgbSheet.createRow(rowIndex)
+            val hsvRow = hsvSheet.createRow(rowIndex)
 
             for (j in 0..2) {
-                val d = colorDataList[i + j]
-                val baseIndex = j * 3
-                row.createCell(baseIndex).setCellValue(d.r.toDouble())
-                row.createCell(baseIndex + 1).setCellValue(d.g.toDouble())
-                row.createCell(baseIndex + 2).setCellValue(d.b.toDouble())
+                val data = colorDataList[i + j]
+                val rgbBase = j * 3
+                rgbRow.createCell(rgbBase).setCellValue(data.r.toDouble())
+                rgbRow.createCell(rgbBase + 1).setCellValue(data.g.toDouble())
+                rgbRow.createCell(rgbBase + 2).setCellValue(data.b.toDouble())
+
+                val hsvBase = j * 3
+                hsvRow.createCell(hsvBase).setCellValue(data.h.toDouble())
+                hsvRow.createCell(hsvBase + 1).setCellValue(data.s.toDouble())
+                hsvRow.createCell(hsvBase + 2).setCellValue(data.v.toDouble())
             }
 
-            for (j in 0..2) {
-                val d = colorDataList[i + j]
-                val baseIndex = 9 + j * 3
-                row.createCell(baseIndex).setCellValue(d.h.toDouble())
-                row.createCell(baseIndex + 1).setCellValue(d.s.toDouble())
-                row.createCell(baseIndex + 2).setCellValue(d.v.toDouble())
-            }
+            rowIndex++
         }
 
-        // Yaz ve dosyayı oluştur
+        // Dosyayı yaz
         file.outputStream().use { workbook.write(it) }
         workbook.close()
 
         return file
     }
 
-    private fun sendEmailWithAttachment(email: String, file: File) {
-        val fileUri = FileProvider.getUriForFile(
-            this@CameraActivity,
-            "com.example.mycameraapp.fileprovider",
-            file
-        )
 
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    private fun sendEmailWithAttachments(email: String, xlsxFile: File, zipFile: File) {
+        val xlsxUri = FileProvider.getUriForFile(this, "com.example.mycameraapp.fileprovider", xlsxFile)
+        val zipUri = FileProvider.getUriForFile(this, "com.example.mycameraapp.fileprovider", zipFile)
+
+        val intent = Intent(Intent.ACTION_SEND_MULTIPLE).apply {
+            type = "*/*"
             putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
-            putExtra(Intent.EXTRA_SUBJECT, "RGB ve HSV Verileri")
-            putExtra(Intent.EXTRA_TEXT, "Ekli dosyada çekilen veriler yer almaktadır.")
-            putExtra(Intent.EXTRA_STREAM, fileUri)
+            putExtra(Intent.EXTRA_SUBJECT, "RGB/HSV Verileri ve Fotoğraflar")
+            putExtra(Intent.EXTRA_TEXT, "Eklerde çekilen veriler ve fotoğraflar yer almaktadır.")
+            putParcelableArrayListExtra(Intent.EXTRA_STREAM, arrayListOf(xlsxUri, zipUri))
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(Intent.createChooser(intent, "E-posta gönder..."))
         } else {
-            Toast.makeText(this, "Mail uygulaması bulunamadı", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "E-posta uygulaması bulunamadı!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -175,15 +175,17 @@ class CameraActivity : AppCompatActivity() {
         builder.setView(input)
 
         builder.setPositiveButton("Gönder") { _, _ ->
-            val email = input.text.toString().trim()
-            if (email.isNotEmpty()) {
-                val file = generateXLSX()
-                sendEmailWithAttachment(email, file)
+            val emailAddress = input.text.toString().trim()
+            if (emailAddress.isNotEmpty()) {
+                val xlsx = generateXLSX()
+                val zip = createPhotoZip()
+                sendEmailWithAttachments(emailAddress, xlsx, zip)
 
-                // 🔄 Verileri gönderimden sonra temizle
+                // Verileri sıfırla
                 colorDataList.clear()
                 rgbList.clear()
                 hsvList.clear()
+                photoFileList.clear()
                 photoCount = 0
                 textCounter.text = "0 ölçüm alındı"
             } else {
@@ -194,6 +196,7 @@ class CameraActivity : AppCompatActivity() {
         builder.setNegativeButton("İptal", null)
         builder.show()
     }
+
 
     private val textureListener = object : TextureView.SurfaceTextureListener {
         override fun onSurfaceTextureAvailable(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {
@@ -334,16 +337,34 @@ class CameraActivity : AppCompatActivity() {
                 rgbList.add("R: $avgR, G: $avgG, B: $avgB")
                 hsvList.add("H: $avgH, S: $avgS, V: $avgV")
             }
+
+            // Fotoğraf dosyasını kaydet
+            val timestamp = System.currentTimeMillis()
+            val photoFile = File(getExternalFilesDir("photos"), "photo_$timestamp.jpg")
+            photoFile.outputStream().use { out ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
+            }
+            photoFileList.add(photoFile)
         }
 
         Toast.makeText(this, "3 set renk verisi kaydedildi", Toast.LENGTH_SHORT).show()
 
         photoCount++
         textCounter.text = "$photoCount fotoğraf çekildi"
-
-
     }
 
+    private fun createPhotoZip(): File {
+        val zipFile = File(getExternalFilesDir(null), "photos.zip")
+        ZipOutputStream(zipFile.outputStream()).use { zos ->
+            for (file in photoFileList) {
+                val entry = ZipEntry(file.name)
+                zos.putNextEntry(entry)
+                zos.write(file.readBytes())
+                zos.closeEntry()
+            }
+        }
+        return zipFile
+    }
 
     override fun onPause() {
         cameraDevice?.close()
