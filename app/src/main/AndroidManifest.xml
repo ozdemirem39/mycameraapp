@@ -42,6 +42,6 @@
 
         <activity android:name=".AnalyzeSetupActivity" />
 
+        <activity android:name=".AnalyzeCameraActivity" />
     </application>
-
 </manifest>
