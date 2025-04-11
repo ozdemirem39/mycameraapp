@@ -97,7 +97,7 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun generateXLSX(): File {
-        val file = File(getExternalFilesDir(null), "data.xlsx")
+        val file = File(getExternalFilesDir(null), "$userFileName.xlsx")
         val workbook = XSSFWorkbook()
 
         // RGB Sayfası
