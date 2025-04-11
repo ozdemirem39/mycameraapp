@@ -369,7 +369,7 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun createPhotoZip(): File {
-        val zipFile = File(getExternalFilesDir(null), "photos.zip")
+        val zipFile = File(getExternalFilesDir(null), "$userFileName.zip")
         ZipOutputStream(zipFile.outputStream()).use { zos ->
             for (file in photoFileList) {
                 val entry = ZipEntry(file.name)
