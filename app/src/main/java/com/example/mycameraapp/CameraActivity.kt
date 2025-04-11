@@ -89,7 +89,7 @@ class CameraActivity : AppCompatActivity() {
         btnNext.setOnClickListener {
             Toast.makeText(this, "Veriler kaydedildi. Yeni çekime hazır.", Toast.LENGTH_SHORT).show()
         }
-        btnFinishSend.setOnClickListener { promptEmailAndSend() }
+        btnFinishSend.setOnClickListener { promptFileNameDialog() }
         textCounter = findViewById(R.id.textCounter)
 
         textCounter = findViewById(R.id.textCounter)
