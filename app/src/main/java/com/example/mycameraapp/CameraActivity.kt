@@ -145,7 +145,22 @@ class CameraActivity : AppCompatActivity() {
         return file
     }
 
-    
+    private fun promptFileNameDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Dosya adı girin (örn. numune1)")
+
+        val input = EditText(this)
+        builder.setView(input)
+
+        builder.setPositiveButton("Next") { _, _ ->
+            val name = input.text.toString().trim()
+            userFileName = if (name.isNotEmpty()) name else "veri"
+            promptEmailAndSend() // → İkinci aşama
+        }
+
+        builder.setNegativeButton("İptal", null)
+        builder.show()
+    }
 
     private fun sendEmailWithAttachments(email: String, xlsxFile: File, zipFile: File) {
         val xlsxUri = FileProvider.getUriForFile(this, "com.example.mycameraapp.fileprovider", xlsxFile)
