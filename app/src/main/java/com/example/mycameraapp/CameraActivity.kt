@@ -94,7 +94,7 @@ class CameraActivity : AppCompatActivity() {
         textCounter = findViewById(R.id.textCounter)
         textCounter.text = "0 ölçüm alındı"
 
-        
+
     }
 
     private fun generateXLSX(): File {
@@ -137,17 +137,14 @@ class CameraActivity : AppCompatActivity() {
                 hsvRow.createCell(hsvBase + 1).setCellValue(data.s.toDouble())
                 hsvRow.createCell(hsvBase + 2).setCellValue(data.v.toDouble())
             }
-
             rowIndex++
         }
-
         // Dosyayı yaz
         file.outputStream().use { workbook.write(it) }
         workbook.close()
 
         return file
     }
-
 
     private fun sendEmailWithAttachments(email: String, xlsxFile: File, zipFile: File) {
         val xlsxUri = FileProvider.getUriForFile(this, "com.example.mycameraapp.fileprovider", xlsxFile)
