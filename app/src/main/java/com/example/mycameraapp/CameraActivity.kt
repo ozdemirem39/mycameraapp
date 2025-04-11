@@ -145,6 +145,8 @@ class CameraActivity : AppCompatActivity() {
         return file
     }
 
+    
+
     private fun sendEmailWithAttachments(email: String, xlsxFile: File, zipFile: File) {
         val xlsxUri = FileProvider.getUriForFile(this, "com.example.mycameraapp.fileprovider", xlsxFile)
         val zipUri = FileProvider.getUriForFile(this, "com.example.mycameraapp.fileprovider", zipFile)
