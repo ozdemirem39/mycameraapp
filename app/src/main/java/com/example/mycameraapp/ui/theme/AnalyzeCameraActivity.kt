@@ -141,11 +141,11 @@ class AnalyzeCameraActivity : AppCompatActivity() {
             }
         }
 
-        if (count == 0) return
         val y = sum / count
-        val x = (y - n) / m
-
-        resultText.text = "Ortalama $channel: ${"%.2f".format(y)}\nTahmini Derişim: ${"%.2f".format(x)}"
+        if (m == 0f) {
+            Toast.makeText(this, "m değeri sıfır olamaz!", Toast.LENGTH_SHORT).show()
+            return
+        }
     }
 
     override fun onPause() {
