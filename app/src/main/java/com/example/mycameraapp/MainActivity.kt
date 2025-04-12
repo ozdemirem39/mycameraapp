@@ -24,6 +24,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         })
 
-        
+        val btnAnalyze = findViewById<Button>(R.id.btnAnalyze)
+        btnAnalyze.setOnClickListener {
+            val intent = Intent(this, AnalyzeSetupActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
