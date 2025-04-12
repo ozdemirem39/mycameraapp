@@ -146,6 +146,12 @@ class AnalyzeCameraActivity : AppCompatActivity() {
             Toast.makeText(this, "m değeri sıfır olamaz!", Toast.LENGTH_SHORT).show()
             return
         }
+
+        val x = (y - n) / m
+
+        Log.d("ANALYZE", "Ortalama $channel: $y | m: $m | n: $n | x: $x | count: $count")
+
+        resultText.text = "Ortalama $channel: ${"%.2f".format(y)}\nTahmini Derişim: ${"%.2f".format(x)}"
     }
 
     override fun onPause() {
