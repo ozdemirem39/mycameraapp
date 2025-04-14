@@ -25,11 +25,9 @@ class AnalyzeCameraActivity : AppCompatActivity() {
     private lateinit var captureRequestBuilder: CaptureRequest.Builder
     private var captureSession: CameraCaptureSession? = null
 
-    private lateinit var channel: String
+    private lateinit var formula: String // Kullanıcının girdiği formül
     private var m: Float = 1f
     private var n: Float = 0f
-
-    private var formula: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +38,8 @@ class AnalyzeCameraActivity : AppCompatActivity() {
         btnCapture = findViewById(R.id.btnCapture)
         resultText = findViewById(R.id.resultText)
 
-        // Gelen parametreleri al
-        channel = intent.getStringExtra("channel") ?: "R"
+        // Kullanıcının girdilerini al
+        formula = intent.getStringExtra("formula") ?: "R"
         m = intent.getFloatExtra("m", 1f)
         n = intent.getFloatExtra("n", 0f)
 
@@ -50,7 +48,6 @@ class AnalyzeCameraActivity : AppCompatActivity() {
         btnCapture.setOnClickListener {
             captureAndAnalyze()
         }
-        formula = intent.getStringExtra("formula") ?: "R"
     }
 
     private val textureListener = object : TextureView.SurfaceTextureListener {
@@ -139,6 +136,7 @@ class AnalyzeCameraActivity : AppCompatActivity() {
                 val s = hsv[1].toDouble() * 100
                 val v = hsv[2].toDouble() * 100
 
+                // Kullanıcının girdisini işlemek için Expression kullanılıyor
                 val expression = Expression(formula)
                 expression.addArguments(
                     Argument("R", rInt.toDouble()),
@@ -162,9 +160,10 @@ class AnalyzeCameraActivity : AppCompatActivity() {
 
         val x = (y - n) / m
 
-        Log.d("ANALYZE", "Ortalama $channel: $y | m: $m | n: $n | x: $x | count: $count")
+        Log.d("ANALYZE", "Ortalama $formula: $y | m: $m | n: $n | x: $x | count: $count")
 
-        resultText.text = "Ortalama $channel: ${"%.2f".format(y)}\nTahmini Derişim: ${"%.2f".format(x)}"
+        // Dinamik olarak formülü göstermek için güncellendi
+        resultText.text = "Ortalama $formula: ${"%.2f".format(y)}\nTahmini Derişim: ${"%.2f".format(x)}"
     }
 
     override fun onPause() {
