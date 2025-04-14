@@ -302,67 +302,62 @@ class CameraActivity : AppCompatActivity() {
         val right = rectBounds[2]
         val bottom = rectBounds[3]
 
+        // Fotoğrafın kesilmiş hali
         val cropped = Bitmap.createBitmap(bitmap, left, top, right - left, bottom - top)
 
-        val partWidth = cropped.width / 3
+        var sumR = 0L
+        var sumG = 0L
+        var sumB = 0L
+        var sumH = 0L
+        var sumS = 0L
+        var sumV = 0L
+        var count = 0
 
-        for (i in 0 until 3) {
-            var sumR = 0L
-            var sumG = 0L
-            var sumB = 0L
-            var sumH = 0L
-            var sumS = 0L
-            var sumV = 0L
-            var count = 0
+        // Renk verilerini hesapla
+        for (y in 0 until cropped.height step 10) {
+            for (x in 0 until cropped.width step 10) {
+                val pixel = cropped.getPixel(x, y)
+                val r = Color.red(pixel)
+                val g = Color.green(pixel)
+                val b = Color.blue(pixel)
+                sumR += r
+                sumG += g
+                sumB += b
 
-            val startX = i * partWidth
-            val endX = if (i == 2) cropped.width else startX + partWidth
-
-            for (y in 0 until cropped.height step 10) {
-                for (x in startX until endX step 10) {
-                    val pixel = cropped.getPixel(x, y)
-                    val r = Color.red(pixel)
-                    val g = Color.green(pixel)
-                    val b = Color.blue(pixel)
-                    sumR += r
-                    sumG += g
-                    sumB += b
-
-                    val hsv = FloatArray(3)
-                    Color.RGBToHSV(r, g, b, hsv)
-                    sumH += hsv[0].toLong()
-                    sumS += (hsv[1] * 100).toLong()
-                    sumV += (hsv[2] * 100).toLong()
-                    count++
-                }
+                val hsv = FloatArray(3)
+                Color.RGBToHSV(r, g, b, hsv)
+                sumH += hsv[0].toLong()
+                sumS += (hsv[1] * 100).toLong()
+                sumV += (hsv[2] * 100).toLong()
+                count++
             }
-
-            if (count > 0) {
-                val avgR = (sumR / count).toInt()
-                val avgG = (sumG / count).toInt()
-                val avgB = (sumB / count).toInt()
-                val avgH = sumH.toFloat() / count
-                val avgS = sumS.toFloat() / 100 / count
-                val avgV = sumV.toFloat() / 100 / count
-
-                // Verileri listeye ekle
-                colorDataList.add(ColorData(avgR, avgG, avgB, avgH, avgS, avgV))
-
-                // Ayrıca görsel olarak göstermek için string listene de eklemek istersen:
-                rgbList.add("R: $avgR, G: $avgG, B: $avgB")
-                hsvList.add("H: $avgH, S: $avgS, V: $avgV")
-            }
-
-            // Fotoğraf dosyasını kaydet
-            val timestamp = System.currentTimeMillis()
-            val photoFile = File(getExternalFilesDir("photos"), "photo_$timestamp.jpg")
-            photoFile.outputStream().use { out ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
-            }
-            photoFileList.add(photoFile)
         }
 
-        Toast.makeText(this, "3 set renk verisi kaydedildi", Toast.LENGTH_SHORT).show()
+        if (count > 0) {
+            val avgR = (sumR / count).toInt()
+            val avgG = (sumG / count).toInt()
+            val avgB = (sumB / count).toInt()
+            val avgH = sumH.toFloat() / count
+            val avgS = sumS.toFloat() / 100 / count
+            val avgV = sumV.toFloat() / 100 / count
+
+            // Verileri listeye ekle
+            colorDataList.add(ColorData(avgR, avgG, avgB, avgH, avgS, avgV))
+
+            // Ayrıca görsel olarak göstermek için string listelerine ekle
+            rgbList.add("R: $avgR, G: $avgG, B: $avgB")
+            hsvList.add("H: $avgH, S: $avgS, V: $avgV")
+        }
+
+        // Fotoğraf dosyasını kaydet
+        val timestamp = System.currentTimeMillis()
+        val photoFile = File(getExternalFilesDir("photos"), "photo_$timestamp.jpg")
+        photoFile.outputStream().use { out ->
+            cropped.compress(Bitmap.CompressFormat.JPEG, 90, out)
+        }
+        photoFileList.add(photoFile)
+
+        Toast.makeText(this, "Renk verisi kaydedildi ve fotoğraf çekildi", Toast.LENGTH_SHORT).show()
 
         photoCount++
         textCounter.text = "$photoCount fotoğraf çekildi"
