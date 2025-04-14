@@ -284,7 +284,6 @@ class CameraActivity : AppCompatActivity() {
         }
     }
 
-
     private fun updatePreview() {
         captureRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO)
         try {
