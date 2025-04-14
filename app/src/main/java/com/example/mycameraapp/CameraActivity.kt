@@ -295,15 +295,8 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun capturePhoto() {
+        // Kamera ekranındaki tam görüntüyü al
         val bitmap = textureView.bitmap ?: return
-        val rectBounds = overlayView.getRectBounds()
-        val left = rectBounds[0]
-        val top = rectBounds[1]
-        val right = rectBounds[2]
-        val bottom = rectBounds[3]
-
-        // Fotoğrafın kesilmiş hali
-        val cropped = Bitmap.createBitmap(bitmap, left, top, right - left, bottom - top)
 
         var sumR = 0L
         var sumG = 0L
@@ -314,9 +307,9 @@ class CameraActivity : AppCompatActivity() {
         var count = 0
 
         // Renk verilerini hesapla
-        for (y in 0 until cropped.height step 10) {
-            for (x in 0 until cropped.width step 10) {
-                val pixel = cropped.getPixel(x, y)
+        for (y in 0 until bitmap.height step 10) {
+            for (x in 0 until bitmap.width step 10) {
+                val pixel = bitmap.getPixel(x, y)
                 val r = Color.red(pixel)
                 val g = Color.green(pixel)
                 val b = Color.blue(pixel)
@@ -353,7 +346,7 @@ class CameraActivity : AppCompatActivity() {
         val timestamp = System.currentTimeMillis()
         val photoFile = File(getExternalFilesDir("photos"), "photo_$timestamp.jpg")
         photoFile.outputStream().use { out ->
-            cropped.compress(Bitmap.CompressFormat.JPEG, 90, out)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
         }
         photoFileList.add(photoFile)
 
