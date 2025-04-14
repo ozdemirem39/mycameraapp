@@ -10,32 +10,28 @@ class AnalyzeSetupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_analyze_setup)
 
-        val spinnerChannel = findViewById<Spinner>(R.id.spinnerChannel)
+        val editChannel = findViewById<EditText>(R.id.editChannel)
         val editM = findViewById<EditText>(R.id.editM)
         val editN = findViewById<EditText>(R.id.editN)
         val btnNext = findViewById<Button>(R.id.btnStartAnalyze)
 
-        val channels = arrayOf("R", "G", "B", "H", "S", "V")
-        spinnerChannel.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, channels)
-
-        val selectedChannel = spinnerChannel.selectedItem.toString()
-
         btnNext.setOnClickListener {
-            val selectedChannel = spinnerChannel.selectedItem.toString()
+            val channel = editChannel.text.toString().trim()
             val mValue = editM.text.toString().toFloatOrNull()
             val nValue = editN.text.toString().toFloatOrNull()
+
+            if (channel.isEmpty() || !listOf("R", "G", "B", "H", "S", "V").contains(channel)) {
+                Toast.makeText(this, "Lütfen geçerli bir renk kanalı girin (R, G, B, H, S, V)", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             if (mValue == null || nValue == null) {
                 Toast.makeText(this, "Lütfen geçerli m ve n değerleri girin", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val formulaInput = findViewById<EditText>(R.id.editFormula)
-            val formulaString = formulaInput.text.toString()
-            intent.putExtra("formula", formulaString)
-
             val intent = Intent(this, AnalyzeCameraActivity::class.java).apply {
-                putExtra("channel", selectedChannel)
+                putExtra("channel", channel)
                 putExtra("m", mValue)
                 putExtra("n", nValue)
             }
