@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.util.Log
+import org.mariuszgromada.math.mxparser.*
 
 class AnalyzeCameraActivity : AppCompatActivity() {
 
@@ -27,6 +28,8 @@ class AnalyzeCameraActivity : AppCompatActivity() {
     private lateinit var channel: String
     private var m: Float = 1f
     private var n: Float = 0f
+
+    private var formula: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +50,7 @@ class AnalyzeCameraActivity : AppCompatActivity() {
         btnCapture.setOnClickListener {
             captureAndAnalyze()
         }
+        formula = intent.getStringExtra("formula") ?: "R"
     }
 
     private val textureListener = object : TextureView.SurfaceTextureListener {
@@ -116,27 +120,35 @@ class AnalyzeCameraActivity : AppCompatActivity() {
         val bounds = overlayView.getRectBounds()
         val cropped = Bitmap.createBitmap(bitmap, bounds[0], bounds[1], bounds[2] - bounds[0], bounds[3] - bounds[1])
 
-        var sum = 0f
+        var sum: Double = 0.0
         var count = 0
 
         for (y in 0 until cropped.height step 10) {
             for (x in 0 until cropped.width step 10) {
                 val pixel = cropped.getPixel(x, y)
-                val value = when (channel) {
-                    "R" -> Color.red(pixel).toFloat()
-                    "G" -> Color.green(pixel).toFloat()
-                    "B" -> Color.blue(pixel).toFloat()
-                    else -> {
-                        val hsv = FloatArray(3)
-                        Color.RGBToHSV(Color.red(pixel), Color.green(pixel), Color.blue(pixel), hsv)
-                        when (channel) {
-                            "H" -> hsv[0]
-                            "S" -> hsv[1] * 100
-                            "V" -> hsv[2] * 100
-                            else -> 0f
-                        }
-                    }
-                }
+
+                // RGB (hepsi Int)
+                val rInt = Color.red(pixel)
+                val gInt = Color.green(pixel)
+                val bInt = Color.blue(pixel)
+
+                val hsv = FloatArray(3)
+                Color.RGBToHSV(rInt, gInt, bInt, hsv)
+
+                val h = hsv[0].toDouble()
+                val s = hsv[1].toDouble() * 100
+                val v = hsv[2].toDouble() * 100
+
+                val expression = Expression(formula)
+                expression.addArguments(
+                    Argument("R", rInt.toDouble()),
+                    Argument("G", gInt.toDouble()),
+                    Argument("B", bInt.toDouble()),
+                    Argument("H", h),
+                    Argument("S", s),
+                    Argument("V", v)
+                )
+                val value = expression.calculate()
                 sum += value
                 count++
             }

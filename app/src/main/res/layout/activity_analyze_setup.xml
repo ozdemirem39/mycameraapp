@@ -12,8 +12,8 @@
     <Spinner
         android:id="@+id/spinnerChannel"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="8dp" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
 
     <EditText
         android:id="@+id/editM"
@@ -30,6 +30,13 @@
         android:hint="Kayma (n)"
         android:inputType="numberDecimal"
         android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/editFormula"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Y = fonksiyon (örn: R + G)"
+        android:layout_marginTop="16dp"/>
 
     <Button
         android:id="@+id/btnStartAnalyze"

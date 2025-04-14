@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation("org.apache.poi:poi-ooxml:5.2.3")
+    implementation("org.mariuszgromada.math:MathParser.org-mXparser:5.0.6")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

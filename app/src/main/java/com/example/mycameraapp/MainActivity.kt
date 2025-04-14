@@ -15,16 +15,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btnStartCamera: Button = findViewById<Button>(R.id.btnStartCamera)
-        btnStartCamera.setOnClickListener(View.OnClickListener {
-            val intent = Intent(
-                this@MainActivity,
-                CameraActivity::class.java
-            )
-            startActivity(intent)
-        })
-
+        val btnStartCamera = findViewById<Button>(R.id.btnStartCamera)
         val btnAnalyze = findViewById<Button>(R.id.btnAnalyze)
+
+        btnStartCamera.setOnClickListener {
+            val intent = Intent(this, CameraActivity::class.java)
+            startActivity(intent)
+        }
+
         btnAnalyze.setOnClickListener {
             val intent = Intent(this, AnalyzeSetupActivity::class.java)
             startActivity(intent)

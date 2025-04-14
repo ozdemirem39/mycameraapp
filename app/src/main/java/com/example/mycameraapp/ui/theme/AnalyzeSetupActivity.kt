@@ -18,6 +18,8 @@ class AnalyzeSetupActivity : AppCompatActivity() {
         val channels = arrayOf("R", "G", "B", "H", "S", "V")
         spinnerChannel.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, channels)
 
+        val selectedChannel = spinnerChannel.selectedItem.toString()
+
         btnNext.setOnClickListener {
             val selectedChannel = spinnerChannel.selectedItem.toString()
             val mValue = editM.text.toString().toFloatOrNull()
@@ -27,6 +29,10 @@ class AnalyzeSetupActivity : AppCompatActivity() {
                 Toast.makeText(this, "Lütfen geçerli m ve n değerleri girin", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            val formulaInput = findViewById<EditText>(R.id.editFormula)
+            val formulaString = formulaInput.text.toString()
+            intent.putExtra("formula", formulaString)
 
             val intent = Intent(this, AnalyzeCameraActivity::class.java).apply {
                 putExtra("channel", selectedChannel)
