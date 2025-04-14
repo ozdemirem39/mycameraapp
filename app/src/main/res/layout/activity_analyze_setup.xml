@@ -5,15 +5,15 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:text="Renk Kanalı Girin (R, G, B, H, S, V)"
+        android:text="İfade veya Formül Girin (Örn: 1/(R+G))"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/editChannel"
+        android:id="@+id/editFormula"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:hint="Kanal (ör. R, G, B)"
+        android:hint="Formül (Örn: R+G)"
         android:inputType="text"
         android:layout_marginTop="8dp" />
 
