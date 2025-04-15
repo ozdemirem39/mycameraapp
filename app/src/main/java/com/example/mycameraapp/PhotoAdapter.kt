@@ -1,4 +1,4 @@
-package com.example.mycameraapp.ui.theme
+package com.example.mycameraapp
 
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import java.io.File
-import com.example.mycameraapp.R
 
 class PhotoAdapter(
     private val photoList: MutableList<File>,
