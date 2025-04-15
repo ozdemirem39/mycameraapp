@@ -43,7 +43,8 @@ class CameraActivity : AppCompatActivity() {
     private val REQUEST_CAMERA_PERMISSION = 200
     private var cameraDevice: CameraDevice? = null
     private var captureSession: CameraCaptureSession? = null
-    private var userFileName = "veri" // default isim
+    private var userFileName = "veri"
+    private var isNextButtonClicked = false
     private lateinit var captureRequestBuilder: CaptureRequest.Builder
     private lateinit var cameraManager: CameraManager
     private lateinit var cameraId: String
