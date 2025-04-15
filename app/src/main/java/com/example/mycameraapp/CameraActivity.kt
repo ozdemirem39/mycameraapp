@@ -84,7 +84,7 @@ class CameraActivity : AppCompatActivity() {
         val adapter = PhotoAdapter(photoFileList) { position ->
             deletePhoto(position) // Silme işlemini tetikle
         }
-        photoRecyclerView.layoutManager = LinearLayoutManager(this)
+        photoRecyclerView.layoutManager = GridLayoutManager(this, 2)
         photoRecyclerView.adapter = adapter
 
         // Kamera izni kontrolü
