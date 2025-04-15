@@ -332,9 +332,9 @@ class CameraActivity : AppCompatActivity() {
         }
     }
 
-    private fun capturePhoto() {
+    private fun capturePhoto(): Bitmap? {
         // Kamera ekranındaki tam görüntüyü al
-        val bitmap = textureView.bitmap ?: return
+        val bitmap = textureView.bitmap ?: return null
 
         var sumR = 0L
         var sumG = 0L
@@ -392,6 +392,8 @@ class CameraActivity : AppCompatActivity() {
 
         photoCount++
         textCounter.text = "$photoCount fotoğraf çekildi"
+
+        return bitmap
     }
 
     private fun createPhotoZip(): File {
