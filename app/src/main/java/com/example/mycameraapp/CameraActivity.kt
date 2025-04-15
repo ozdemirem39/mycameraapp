@@ -30,7 +30,7 @@ import org.apache.poi.ss.usermodel.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mycameraapp.PhotoAdapter
 
 class CameraActivity : AppCompatActivity() {
