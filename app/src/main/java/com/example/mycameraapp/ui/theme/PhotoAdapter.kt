@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import java.io.File
+import com.example.mycameraapp.R
 
 class PhotoAdapter(
     private val photoList: MutableList<File>,
