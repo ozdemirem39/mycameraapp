@@ -80,9 +80,9 @@ class CameraActivity : AppCompatActivity() {
         textCounter = findViewById(R.id.textCounter)
 
         // RecyclerView tanımlaması
-        val photoRecyclerView = findViewById<RecyclerView>(R.id.photoRecyclerView)
+        photoRecyclerView = findViewById(R.id.photoRecyclerView)
         val adapter = PhotoAdapter(photoFileList) { position ->
-            deletePhoto(position) // Silme işlemini tetikleyen callback
+            deletePhoto(position) // Silme işlemini tetikle
         }
         photoRecyclerView.layoutManager = LinearLayoutManager(this)
         photoRecyclerView.adapter = adapter
@@ -111,8 +111,6 @@ class CameraActivity : AppCompatActivity() {
         btnFinishSend.setOnClickListener { promptFileNameDialog() }
 
         textCounter.text = "0 ölçüm alındı"
-
-        photoRecyclerView = findViewById(R.id.photoRecyclerView)
     }
 
     private fun generateXLSX(): File {
