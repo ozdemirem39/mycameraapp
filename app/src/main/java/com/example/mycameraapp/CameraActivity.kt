@@ -30,7 +30,7 @@ import org.apache.poi.ss.usermodel.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mycameraapp.PhotoAdapter
 
 class CameraActivity : AppCompatActivity() {
@@ -84,7 +84,8 @@ class CameraActivity : AppCompatActivity() {
         val adapter = PhotoAdapter(photoFileList) { position ->
             deletePhoto(position) // Silme işlemini tetikle
         }
-        photoRecyclerView.layoutManager = GridLayoutManager(this, 5)
+        // RecyclerView için yatay LinearLayoutManager kullanımı
+        photoRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         photoRecyclerView.adapter = adapter
 
         // Kamera izni kontrolü
