@@ -67,11 +67,21 @@ class CameraActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
 
+        // Var olan bileşenlerin tanımlanması
         textureView = findViewById(R.id.textureView)
         overlayView = findViewById(R.id.overlayView)
         btnCapture = findViewById(R.id.btnCapture)
         btnNext = findViewById(R.id.btnNext)
         btnFinishSend = findViewById(R.id.btnFinishSend)
+        textCounter = findViewById(R.id.textCounter)
+
+        // RecyclerView tanımlaması
+        val photoRecyclerView = findViewById<RecyclerView>(R.id.photoRecyclerView)
+        val adapter = PhotoAdapter(photoFileList) { position ->
+            deletePhoto(position) // Silme işlemini tetikleyen callback
+        }
+        photoRecyclerView.layoutManager = LinearLayoutManager(this)
+        photoRecyclerView.adapter = adapter
 
         // Kamera izni kontrolü
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -85,14 +95,17 @@ class CameraActivity : AppCompatActivity() {
             }
         }
 
-        btnCapture.setOnClickListener { capturePhoto() }
+        btnCapture.setOnClickListener {
+            capturePhoto()
+            adapter.notifyDataSetChanged() // Yeni çekilen fotoğrafı listeye ekle
+        }
+
         btnNext.setOnClickListener {
             Toast.makeText(this, "Veriler kaydedildi. Yeni çekime hazır.", Toast.LENGTH_SHORT).show()
         }
-        btnFinishSend.setOnClickListener { promptFileNameDialog() }
-        textCounter = findViewById(R.id.textCounter)
 
-        textCounter = findViewById(R.id.textCounter)
+        btnFinishSend.setOnClickListener { promptFileNameDialog() }
+
         textCounter.text = "0 ölçüm alındı"
     }
 
