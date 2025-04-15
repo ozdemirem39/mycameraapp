@@ -381,4 +381,6 @@ class CameraActivity : AppCompatActivity() {
         val s: Float,
         val v: Float
     )
+
+    
 }
