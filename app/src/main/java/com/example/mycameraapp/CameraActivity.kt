@@ -381,4 +381,16 @@ class CameraActivity : AppCompatActivity() {
         val s: Float,
         val v: Float
     )
+
+    fun deletePhoto(photoIndex: Int) {
+        if (photoIndex >= 0 && photoIndex < photoFileList.size) {
+            val fileToDelete = photoFileList[photoIndex]
+            if (fileToDelete.exists()) {
+                fileToDelete.delete() // Fotoğraf dosyasını cihazdan sil
+            }
+            photoFileList.removeAt(photoIndex) // Listeden kaldır
+            photoRecyclerView.adapter?.notifyItemRemoved(photoIndex)
+            Toast.makeText(this, "Fotoğraf silindi", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
