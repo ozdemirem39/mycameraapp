@@ -111,14 +111,14 @@ class CameraActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Eğer Next butonuna tıklanmışsa yeni fotoğraf seriye eklenir
             if (isNextButtonClicked) {
+                // Eğer "Next" butonuna tıklanmışsa yeni fotoğraf seriye eklenir
                 photoList.add(newPhoto) // Yeni fotoğrafı listeye ekle
                 adapter.notifyItemInserted(photoList.size - 1) // RecyclerView'a yeni öğe eklendiğini bildir
                 isNextButtonClicked = false // Next durumunu sıfırla
                 Log.d("Capture", "Yeni fotoğraf seriye eklendi. Toplam fotoğraf sayısı: ${photoList.size}")
             } else {
-                // Eğer Next butonuna tıklanmadıysa, son fotoğraf güncellenir
+                // Eğer "Next" butonuna tıklanmadıysa, son fotoğraf güncellenir
                 if (photoList.isNotEmpty()) {
                     photoList[photoList.size - 1] = newPhoto // Son öğeyi güncelle
                     adapter.notifyItemChanged(photoList.size - 1) // RecyclerView'a öğenin güncellendiğini bildir
