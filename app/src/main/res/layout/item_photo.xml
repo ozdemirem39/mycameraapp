@@ -18,7 +18,5 @@
         android:id="@+id/btnDeletePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sil"
-        android:textColor="#FFFFFF"
-        android:background="#FF0000" />
+        android:text="Sil"/>
 </LinearLayout>
