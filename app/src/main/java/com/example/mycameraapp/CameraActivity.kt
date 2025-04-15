@@ -32,6 +32,7 @@ import java.util.zip.ZipOutputStream
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mycameraapp.PhotoAdapter
+import android.util.Log
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var textureView: TextureView
