@@ -105,6 +105,16 @@ class CameraActivity : AppCompatActivity() {
         btnCapture.setOnClickListener {
             val newPhoto = capturePhoto() // Yeni fotoğrafı çek
 
+            if (photoList.isNotEmpty()) {
+                // Mevcut listenin son öğesini güncelle
+                photoList[photoList.size - 1] = newPhoto
+                adapter.notifyItemChanged(photoList.size - 1) // RecyclerView'a öğenin güncellendiğini bildir
+            } else {
+                // Liste boşsa yeni bir fotoğraf ekle
+                photoList.add(newPhoto)
+                adapter.notifyItemInserted(photoList.size - 1)
+            }
+
             if (newPhoto != null) {
                 if (isNextButtonClicked) {
                     // Seriye yeni bir fotoğraf ekle
