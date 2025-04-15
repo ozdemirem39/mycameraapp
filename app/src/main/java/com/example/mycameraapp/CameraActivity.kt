@@ -94,8 +94,6 @@ class CameraActivity : AppCompatActivity() {
 
         textCounter = findViewById(R.id.textCounter)
         textCounter.text = "0 ölçüm alındı"
-
-        
     }
 
     private fun generateXLSX(): File {
