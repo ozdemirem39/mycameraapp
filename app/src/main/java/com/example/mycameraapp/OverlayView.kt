@@ -20,8 +20,8 @@ class OverlayView(context: Context, attrs: AttributeSet?) : View(context, attrs)
         val width = canvas.width
         val height = canvas.height
 
-        val rectWidth = width / 6
-        val rectHeight = height / 6
+        val rectWidth = width / 12
+        val rectHeight = height / 12
         val left = (width - rectWidth) / 2
         val top = (height - rectHeight) / 2
         val right = left + rectWidth
@@ -34,8 +34,8 @@ class OverlayView(context: Context, attrs: AttributeSet?) : View(context, attrs)
     fun getRectBounds(): IntArray {
         val width = width
         val height = height
-        val rectWidth = width / 6
-        val rectHeight = height / 6
+        val rectWidth = width / 12
+        val rectHeight = height / 12
         val left = (width - rectWidth) / 2
         val top = (height - rectHeight) / 2
         val right = left + rectWidth
