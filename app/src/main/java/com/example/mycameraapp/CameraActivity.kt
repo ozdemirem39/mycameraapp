@@ -111,6 +111,8 @@ class CameraActivity : AppCompatActivity() {
         btnFinishSend.setOnClickListener { promptFileNameDialog() }
 
         textCounter.text = "0 ölçüm alındı"
+
+        photoRecyclerView = findViewById(R.id.photoRecyclerView)
     }
 
     private fun generateXLSX(): File {
