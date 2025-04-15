@@ -105,35 +105,26 @@ class CameraActivity : AppCompatActivity() {
         btnCapture.setOnClickListener {
             val newPhoto = capturePhoto() // Yeni fotoğrafı çek
 
-            if (photoList.isNotEmpty()) {
-                // Mevcut listenin son öğesini güncelle
-                photoList[photoList.size - 1] = newPhoto
-                adapter.notifyItemChanged(photoList.size - 1) // RecyclerView'a öğenin güncellendiğini bildir
-            } else {
-                // Liste boşsa yeni bir fotoğraf ekle
-                photoList.add(newPhoto)
-                adapter.notifyItemInserted(photoList.size - 1)
+            if (newPhoto == null) {
+                Toast.makeText(this, "Fotoğraf çekilemedi", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
-            if (newPhoto != null) {
-                if (isNextButtonClicked) {
-                    // Seriye yeni bir fotoğraf ekle
+            if (isNextButtonClicked) {
+                // Seriye yeni bir fotoğraf ekle
+                photoList.add(newPhoto)
+                adapter.notifyItemInserted(photoList.size - 1)
+                isNextButtonClicked = false
+            } else {
+                // Mevcut listenin son öğesini güncelle
+                if (photoList.isNotEmpty()) {
+                    photoList[photoList.size - 1] = newPhoto
+                    adapter.notifyItemChanged(photoList.size - 1)
+                } else {
+                    // Liste boşsa yeni bir fotoğraf ekle
                     photoList.add(newPhoto)
                     adapter.notifyItemInserted(photoList.size - 1)
-                    isNextButtonClicked = false
-                } else {
-                    // Mevcut fotoğrafı güncelle
-                    if (photoList.isNotEmpty()) {
-                        photoList[photoList.size - 1] = newPhoto
-                        adapter.notifyItemChanged(photoList.size - 1)
-                    } else {
-                        // Liste boşsa fotoğrafı ekle
-                        photoList.add(newPhoto)
-                        adapter.notifyItemInserted(photoList.size - 1)
-                    }
                 }
-            } else {
-                Toast.makeText(this, "Fotoğraf çekilemedi", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -142,7 +133,9 @@ class CameraActivity : AppCompatActivity() {
             Toast.makeText(this, "Yeni çekime hazır. Veriler kaydedildi.", Toast.LENGTH_SHORT).show()
         }
 
-        btnFinishSend.setOnClickListener { promptFileNameDialog() }
+        btnFinishSend.setOnClickListener {
+            promptFileNameDialog()
+        }
 
         textCounter.text = "0 ölçüm alındı"
     }
