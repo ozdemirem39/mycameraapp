@@ -126,6 +126,9 @@ class CameraActivity : AppCompatActivity() {
                     adapter.notifyItemInserted(photoList.size - 1)
                 }
             }
+
+            // Ekrandaki "n ölçüm alındı" yazısını güncelle
+            textCounter.text = "${photoList.size} ölçüm alındı"
         }
 
         btnNext.setOnClickListener {
@@ -137,7 +140,8 @@ class CameraActivity : AppCompatActivity() {
             promptFileNameDialog()
         }
 
-        textCounter.text = "0 ölçüm alındı"
+// Başlangıçta "0 ölçüm alındı" yazısını göster
+        textCounter.text = "${photoList.size} ölçüm alındı"
     }
 
     private fun generateXLSX(): File {
