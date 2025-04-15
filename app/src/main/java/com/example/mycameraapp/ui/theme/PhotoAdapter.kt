@@ -11,9 +11,10 @@ import java.io.File
 
 class PhotoAdapter(
     private val photoList: MutableList<File>,
-    private val onDeleteClick: (Int) -> Unit
+    private val onDeleteClick: (Int) -> Unit // Silme işlemini tetikleyecek callback
 ) : RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder>() {
 
+    // ViewHolder sınıfı
     class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.photoImageView)
         val deleteButton: Button = itemView.findViewById(R.id.btnDeletePhoto)
@@ -30,6 +31,7 @@ class PhotoAdapter(
         val bitmap = BitmapFactory.decodeFile(photoFile.path)
         holder.imageView.setImageBitmap(bitmap)
 
+        // Silme butonuna tıklama işlemi
         holder.deleteButton.setOnClickListener {
             onDeleteClick(position)
         }
