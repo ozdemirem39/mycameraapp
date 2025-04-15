@@ -48,6 +48,7 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var cameraManager: CameraManager
     private lateinit var cameraId: String
     private lateinit var textCounter: TextView
+    private lateinit var photoRecyclerView: RecyclerView
 
     private val rgbList = ArrayList<String>()
     private val hsvList = ArrayList<String>()
