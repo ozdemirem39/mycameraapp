@@ -66,5 +66,6 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="72dp"
         android:padding="8dp"
-        android:background="@android:color/black" />
+        android:background="@android:color/black"
+        android:contentDescription="Fotoğraf listesi" />
 </FrameLayout>
