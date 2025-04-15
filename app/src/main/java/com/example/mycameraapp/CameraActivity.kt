@@ -111,33 +111,38 @@ class CameraActivity : AppCompatActivity() {
             }
 
             if (isNextButtonClicked) {
-                // Seriye yeni bir fotoğraf ekle
+                // Eğer "Next" butonuna tıklanmışsa seriye yeni bir fotoğraf ekle
                 photoList.add(newPhoto)
                 adapter.notifyItemInserted(photoList.size - 1)
                 isNextButtonClicked = false
+                Log.d("Capture", "Yeni fotoğraf seriye eklendi. Toplam fotoğraf sayısı: ${photoList.size}")
             } else {
-                // Mevcut listenin son öğesini güncelle
+                // Eğer "Next" butonuna tıklanmadıysa, mevcut fotoğrafın yerine geç
                 if (photoList.isNotEmpty()) {
                     photoList[photoList.size - 1] = newPhoto
                     adapter.notifyItemChanged(photoList.size - 1)
+                    Log.d("Capture", "Son fotoğraf güncellendi. Toplam fotoğraf sayısı: ${photoList.size}")
                 } else {
                     // Liste boşsa yeni bir fotoğraf ekle
                     photoList.add(newPhoto)
                     adapter.notifyItemInserted(photoList.size - 1)
+                    Log.d("Capture", "Liste boştu, yeni fotoğraf eklendi. Toplam fotoğraf sayısı: ${photoList.size}")
                 }
             }
 
-            // Ekrandaki "n ölçüm alındı" yazısını güncelle
+            // "n ölçüm alındı" yazısını güncelle
             textCounter.text = "${photoList.size} ölçüm alındı"
         }
 
         btnNext.setOnClickListener {
             isNextButtonClicked = true
             Toast.makeText(this, "Yeni çekime hazır. Veriler kaydedildi.", Toast.LENGTH_SHORT).show()
+            Log.d("Next", "Next butonuna tıklandı. Sonraki fotoğraf seriye eklenecek.")
         }
 
         btnFinishSend.setOnClickListener {
             promptFileNameDialog()
+            Log.d("Finish", "Finish işlemi başlatıldı.")
         }
 
 // Başlangıçta "0 ölçüm alındı" yazısını göster
