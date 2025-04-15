@@ -29,6 +29,6 @@
         android:textSize="16sp"
         android:background="#AAFFFFFF"
         android:padding="12dp"
-        android:layout_gravity="top"
+        android:layout_gravity="center_horizontal"
         android:textAlignment="center" />
 </FrameLayout>
