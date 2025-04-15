@@ -381,18 +381,4 @@ class CameraActivity : AppCompatActivity() {
         val s: Float,
         val v: Float
     )
-
-    fun deletePhoto(photoIndex: Int) {
-        if (photoIndex >= 0 && photoIndex < photoFileList.size) {
-            val fileToDelete = photoFileList[photoIndex]
-            if (fileToDelete.exists()) {
-                fileToDelete.delete() // Fotoğraf dosyasını cihazdan sil
-            }
-            photoFileList.removeAt(photoIndex) // Listeyi güncelle
-            photoCount--
-            textCounter.text = "$photoCount ölçüm alındı"
-        } else {
-            Toast.makeText(this, "Geçersiz fotoğraf seçimi", Toast.LENGTH_SHORT).show()
-        }
-    }
 }
