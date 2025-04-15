@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation("org.apache.poi:poi-ooxml:5.2.3")
     implementation("org.mariuszgromada.math:MathParser.org-mXparser:5.0.6")
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
