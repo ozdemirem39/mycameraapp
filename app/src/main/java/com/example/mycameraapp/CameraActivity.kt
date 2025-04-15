@@ -402,7 +402,9 @@ class CameraActivity : AppCompatActivity() {
                 fileToDelete.delete() // Fotoğraf dosyasını cihazdan sil
             }
             photoFileList.removeAt(photoIndex) // Listeden kaldır
-            photoRecyclerView.adapter?.notifyItemRemoved(photoIndex)
+            photoRecyclerView.adapter?.notifyItemRemoved(photoIndex) // RecyclerView'i güncelle
+            photoCount--
+            textCounter.text = "$photoCount ölçüm alındı"
             Toast.makeText(this, "Fotoğraf silindi", Toast.LENGTH_SHORT).show()
         }
     }
