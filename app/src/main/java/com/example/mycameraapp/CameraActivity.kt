@@ -107,7 +107,8 @@ class CameraActivity : AppCompatActivity() {
         }
 
         btnNext.setOnClickListener {
-            Toast.makeText(this, "Veriler kaydedildi. Yeni çekime hazır.", Toast.LENGTH_SHORT).show()
+            isNextButtonClicked = true
+            Toast.makeText(this, "Yeni çekime hazır. Veriler kaydedildi.", Toast.LENGTH_SHORT).show()
         }
 
         btnFinishSend.setOnClickListener { promptFileNameDialog() }
