@@ -105,7 +105,6 @@ class CameraActivity : AppCompatActivity() {
 
         btnCapture.setOnClickListener {
             val newPhoto = capturePhoto() // Yeni fotoğrafı çek
-
             if (newPhoto == null) {
                 Toast.makeText(this, "Fotoğraf çekilemedi", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -140,14 +139,6 @@ class CameraActivity : AppCompatActivity() {
             Toast.makeText(this, "Yeni çekime hazır. Veriler kaydedildi.", Toast.LENGTH_SHORT).show()
             Log.d("Next", "Next butonuna tıklandı. Sonraki fotoğraf seriye eklenecek.")
         }
-
-        btnFinishSend.setOnClickListener {
-            promptFileNameDialog()
-            Log.d("Finish", "Finish işlemi başlatıldı.")
-        }
-
-// Başlangıçta "0 ölçüm alındı" yazısını göster
-        textCounter.text = "${photoList.size} ölçüm alındı"
     }
 
     private fun generateXLSX(): File {
