@@ -56,6 +56,7 @@ class CameraActivity : AppCompatActivity() {
     private val colorDataList = mutableListOf<ColorData>()
     private var photoCount = 0
     private val photoFileList = ArrayList<File>()
+    private val photoList = mutableListOf<Bitmap>()
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
