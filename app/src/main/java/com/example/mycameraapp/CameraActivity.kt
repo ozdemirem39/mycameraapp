@@ -105,23 +105,25 @@ class CameraActivity : AppCompatActivity() {
         btnCapture.setOnClickListener {
             val newPhoto = capturePhoto() // Yeni fotoğrafı çek
 
-            if (isNextButtonClicked) {
-                // Seriye yeni bir fotoğraf ekle
-                photoList.add(newPhoto)
-                adapter.notifyItemInserted(photoList.size - 1)
-
-                // `isNextButtonClicked` durumunu sıfırla
-                isNextButtonClicked = false
-            } else {
-                // Mevcut fotoğrafı güncelle
-                if (photoList.isNotEmpty()) {
-                    photoList[photoList.size - 1] = newPhoto
-                    adapter.notifyItemChanged(photoList.size - 1)
-                } else {
-                    // Liste boşsa fotoğrafı ekle
+            if (newPhoto != null) {
+                if (isNextButtonClicked) {
+                    // Seriye yeni bir fotoğraf ekle
                     photoList.add(newPhoto)
                     adapter.notifyItemInserted(photoList.size - 1)
+                    isNextButtonClicked = false
+                } else {
+                    // Mevcut fotoğrafı güncelle
+                    if (photoList.isNotEmpty()) {
+                        photoList[photoList.size - 1] = newPhoto
+                        adapter.notifyItemChanged(photoList.size - 1)
+                    } else {
+                        // Liste boşsa fotoğrafı ekle
+                        photoList.add(newPhoto)
+                        adapter.notifyItemInserted(photoList.size - 1)
+                    }
                 }
+            } else {
+                Toast.makeText(this, "Fotoğraf çekilemedi", Toast.LENGTH_SHORT).show()
             }
         }
 
